@@ -1,5 +1,7 @@
 package binarytree
 
+import "math"
+
 type Node struct {
 	Data       interface{}
 	LeftChild  *Node
@@ -51,12 +53,71 @@ func (bt *BinaryTree) Search(root *Node, data interface{}) bool {
 	return bt.Search(root.RightChild, data)
 }
 
-func (bt *BinaryTree) Size(root *Node) int {
+func (bt *BinaryTree) Delete(data interface{}) bool {
+	var checkNodes []*Node
+	var parent []*Node
+	checkNodes = append(checkNodes, bt.Root)
+	for len(checkNodes) > 0 {
+		var parentNode *Node
+		if parent != nil {
+			parentNode = parent[0]
+			parent = parent[1:]
+		}
+		currentNode := checkNodes[0]
+		checkNodes = checkNodes[1:]
+		if currentNode.Data == data {
+			if currentNode.LeftChild != nil && currentNode.RightChild != nil {
+				rightmostNode := bt.Root
+				for rightmostNode.RightChild != nil {
+					rightmostNode = rightmostNode.RightChild
+				}
+				bt.Delete(rightmostNode.Data)
+				currentNode.Data = rightmostNode.Data
+
+			} else if currentNode.LeftChild != nil {
+				*currentNode = *currentNode.LeftChild
+
+			} else if currentNode.RightChild != nil {
+				*currentNode = *currentNode.RightChild
+			} else {
+				if parent == nil {
+					bt.Root = nil
+				} else if parentNode.LeftChild == currentNode {
+					parentNode.LeftChild = nil
+				} else if parentNode.RightChild == currentNode {
+					parentNode.RightChild = nil
+				}
+			}
+			return true
+		}
+
+		if currentNode.LeftChild != nil {
+			checkNodes = append(checkNodes, currentNode.LeftChild)
+			parent = append(parent, currentNode)
+		}
+
+		if currentNode.RightChild != nil {
+			checkNodes = append(checkNodes, currentNode.RightChild)
+			parent = append(parent, currentNode)
+		}
+	}
+	return false
+}
+func (bt *BinaryTree) Height(root *Node) int {
 	if root == nil {
 		return 0
 	}
+	return int(
+		math.Max(
+			float64(bt.Height(root.LeftChild)), float64(bt.Height(root.RightChild))) + 1)
+}
 
-	checkNodes := []*Node{root}
+func (bt *BinaryTree) Size() int {
+	if bt.Root == nil {
+		return 0
+	}
+
+	checkNodes := []*Node{bt.Root}
 	size := 0
 
 	for len(checkNodes) > 0 {
@@ -74,6 +135,17 @@ func (bt *BinaryTree) Size(root *Node) int {
 	}
 
 	return size
+}
+
+func (bt *BinaryTree) IsBalanced(root *Node) bool {
+	if root == nil {
+		return true
+	}
+
+	if math.Abs(float64(bt.Height(root.LeftChild)-bt.Height(root.RightChild))) < 2 && bt.IsBalanced(root.LeftChild) && bt.IsBalanced(root.RightChild) {
+		return true
+	}
+	return false
 }
 
 func (bt *BinaryTree) InOrderTraverse(root *Node, capture func(interface{})) {
