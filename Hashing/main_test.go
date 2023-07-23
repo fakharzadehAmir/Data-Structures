@@ -6,13 +6,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// djb2Hash calculates the hash value for the given key using the djb2 hash function.
 func djb2Hash(key string) int {
 	hash := 5381
 	for _, ch := range key {
 		hash = (hash * 33) ^ int(ch)
 	}
-	return hash & 0x7FFFFFFF // Ensure the hash is a positive value
+	return hash & 0x7FFFFFFF
 }
 
 func TestInsert(t *testing.T) {
@@ -22,7 +21,6 @@ func TestInsert(t *testing.T) {
 		testData := []struct {
 			data string
 		}{
-			// Test data for insertion and retrieval test case
 			{"apple"},
 			{"orange"},
 			{"banana"},
@@ -33,7 +31,6 @@ func TestInsert(t *testing.T) {
 			{"peach"},
 		}
 
-		// Insert test data into the hashtable and ensure that the retrieved data is equal to the inserted data.
 		for _, data := range testData {
 			hashKey := djb2Hash(data.data) % 8
 			hash.Insert(data.data, hashKey)
@@ -50,7 +47,6 @@ func TestDelete(t *testing.T) {
 		testData := []struct {
 			data string
 		}{
-			// Test data for insertion and deletion test case
 			{"apple"},
 			{"orange"},
 			{"banana"},
@@ -61,13 +57,11 @@ func TestDelete(t *testing.T) {
 			{"peach"},
 		}
 
-		// Insert test data into the hashtable
 		for _, data := range testData {
 			hashKey := djb2Hash(data.data) % 8
 			hash.Insert(data.data, hashKey)
 		}
 
-		// Deleting a non-closure (first element in linked list)
 		deleteDataNonClosure := "orange"
 		deleteHashKeyNonClosure := djb2Hash(deleteDataNonClosure) % 8
 		hash.Delete(deleteDataNonClosure, deleteHashKeyNonClosure)
@@ -77,7 +71,6 @@ func TestDelete(t *testing.T) {
 			deletedNodeNonClosure = deletedNodeNonClosure.Next
 		}
 
-		// Deleting a closure (non-first element in linked list)
 		deleteDataClosure := "pear"
 		deleteHashKeyClosure := djb2Hash(deleteDataClosure) % 8
 		hash.Delete(deleteDataClosure, deleteHashKeyClosure)
@@ -87,16 +80,52 @@ func TestDelete(t *testing.T) {
 			deletedNodeClosure = deletedNodeClosure.Next
 		}
 
-		// Non-existing element
 		nonExistingData := "strawberry"
 		nonExistingHashKey := djb2Hash(nonExistingData) % 8
 		result := hash.Delete(nonExistingData, nonExistingHashKey)
-		expected := false
-		assert.Equal(result, expected, "The result should be false for a non-existing element")
+		expeced := false
+		assert.Equal(result, expeced, "Retrieved data should be equal to inserted data")
 	})
 }
 
-// The TestSearch function has already been provided in the previous response and doesn't require additional comments.
+func TestSearch(t *testing.T) {
+	t.Run("Insert and Search", func(t *testing.T) {
+		assert := assert.New(t)
+		hash := NewHash(8)
+		testData := []struct {
+			data string
+		}{
+			{"apple"},
+			{"orange"},
+			{"banana"},
+			{"grape"},
+			{"melon"},
+			{"kiwi"},
+			{"pear"},
+			{"peach"},
+		}
+
+		for _, data := range testData {
+			hashKey := djb2Hash(data.data) % 8
+			hash.Insert(data.data, hashKey)
+		}
+
+		searchData := "orange"
+		searchHashKey := djb2Hash(searchData) % 8
+		found := hash.Search(searchData, searchHashKey)
+		assert.True(found, "The search should find the existing element")
+
+		searchData = "apple"
+		searchHashKey = djb2Hash(searchData) % 8
+		found = hash.Search(searchData, searchHashKey)
+		assert.True(found, "The search should find the existing element")
+
+		nonExistingData := "strawberry"
+		nonExistingHashKey := djb2Hash(nonExistingData) % 8
+		found = hash.Search(nonExistingData, nonExistingHashKey)
+		assert.False(found, "The search should not find the non-existing element")
+	})
+}
 
 func TestClear(t *testing.T) {
 	t.Run("Insert and Search", func(t *testing.T) {
@@ -105,21 +134,25 @@ func TestClear(t *testing.T) {
 		testData := []struct {
 			data string
 		}{
-			// Test data for clearing test case
-			// ... (the provided test data)
+			{"apple"},
+			{"orange"},
+			{"banana"},
+			{"grape"},
+			{"melon"},
+			{"kiwi"},
+			{"pear"},
+			{"peach"},
 		}
 
-		// Insert test data into the hashtable
 		for _, data := range testData {
 			hashKey := djb2Hash(data.data) % 8
 			hash.Insert(data.data, hashKey)
 		}
-		// Test Case for testing Clear method
 		hash.Clear()
 		nonExistingData := "apple"
 		nonExistingHashKey := djb2Hash(nonExistingData) % 8
 		found := hash.Search(nonExistingData, nonExistingHashKey)
-		assert.False(found, "The search should not find the non-existing element after clearing the hashtable")
+		assert.False(found, "The search should not find the non-existing element")
 	})
 }
 
@@ -184,12 +217,10 @@ func TestCount(t *testing.T) {
 			{"tomato"},
 		}
 
-		// Insert test data into the hashtable
 		for _, data := range testData {
 			hashKey := djb2Hash(data.data) % 8
 			hash.Insert(data.data, hashKey)
 		}
-		// Test Case for testing Count method
 		count := hash.Count()
 		assert.Equal(count, len(testData), "Retrieved counted data should be equal to inserted data")
 	})
