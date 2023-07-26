@@ -19,25 +19,19 @@ func (mh *MinHeap) MinHeapify() {
 		if reHeap.LeftChild == nil && reHeap.RightChild == nil {
 			break
 		}
-		if reHeap.LeftChild != nil && reHeap.Data < reHeap.LeftChild.Data {
+		smallest := reHeap
+		if reHeap.LeftChild != nil && reHeap.LeftChild.Data < smallest.Data {
+			smallest = reHeap.LeftChild
+		}
+		if reHeap.RightChild != nil && reHeap.RightChild.Data < smallest.Data {
+			smallest = reHeap.RightChild
+		}
+		if smallest == reHeap {
 			break
 		}
-		if reHeap.RightChild != nil && reHeap.Data < reHeap.RightChild.Data {
-			break
-		}
-		if reHeap.Data >= reHeap.LeftChild.Data {
-			temp := reHeap.LeftChild.Data
-			reHeap.LeftChild.Data = reHeap.Data
-			reHeap.Data = temp
-			reHeap = reHeap.LeftChild
-		} else if reHeap.Data >= reHeap.RightChild.Data {
-			temp := reHeap.RightChild.Data
-			reHeap.RightChild.Data = reHeap.Data
-			reHeap.Data = temp
-			reHeap = reHeap.RightChild
-		}
+		reHeap.Data, smallest.Data = smallest.Data, reHeap.Data
+		reHeap = smallest
 	}
-
 }
 
 func (mh *MinHeap) Insert(newData float64) {
@@ -71,56 +65,100 @@ func (mh *MinHeap) Insert(newData float64) {
 		}
 	}
 
-	InsertMinHeapify := func(newValue *MinHeap) {
-		for newValue.Parent != nil {
-			if newValue.Data < newValue.Parent.Data {
-				temp := newValue.Parent.Data
-				newValue.Parent.Data = newValue.Data
-				newValue.Data = temp
-				newValue = newValue.Parent
-			} else {
-				break
-			}
+	for newValue.Parent != nil {
+		if newValue.Data < newValue.Parent.Data {
+			newValue.Data, newValue.Parent.Data = newValue.Parent.Data, newValue.Data
+			newValue = newValue.Parent
+		} else {
+			break
 		}
 	}
-	InsertMinHeapify(newValue)
 }
 
 func (mh *MinHeap) Extract() (*MinHeap, float64) {
 	minNode := mh.Data
 
-	var findLastNode []*MinHeap
-	findLastNode = append(findLastNode, mh)
-	var lastNode *MinHeap
-	for len(findLastNode) > 0 {
-		lastNode = findLastNode[0]
-		findLastNode = findLastNode[1:]
-		if lastNode.LeftChild != nil {
-			findLastNode = append(findLastNode, lastNode.LeftChild)
-		}
-		if lastNode.RightChild != nil {
-			findLastNode = append(findLastNode, lastNode.RightChild)
-		}
-	}
-
-	if mh == lastNode {
-		return nil, minNode
-	} else {
+	lastNode := getLastNode(mh)
+	if mh != lastNode {
 		mh.Data = lastNode.Data
 		parentNode := lastNode.Parent
 		if lastNode == parentNode.LeftChild {
 			parentNode.LeftChild = nil
-		}
-		if lastNode == parentNode.RightChild {
+		} else {
 			parentNode.RightChild = nil
 		}
-
 		mh.MinHeapify()
-		return mh, minNode
 	}
 
+	return mh, minNode
 }
 
 func (mh *MinHeap) Peek() float64 {
 	return mh.Data
+}
+
+func (mh *MinHeap) Delete(data float64) {
+	nodeToDelete := findNodeToDelete(mh, data)
+
+	if nodeToDelete == nil {
+		return
+	}
+
+	lastNode := getLastNode(mh)
+	if nodeToDelete != lastNode {
+		nodeToDelete.Data = lastNode.Data
+		parentNode := lastNode.Parent
+		if lastNode == parentNode.LeftChild {
+			parentNode.LeftChild = nil
+		} else {
+			parentNode.RightChild = nil
+		}
+		mh.MinHeapify()
+	}
+}
+
+func findNodeToDelete(mh *MinHeap, data float64) *MinHeap {
+	var nodesToVisit []*MinHeap
+	nodesToVisit = append(nodesToVisit, mh)
+
+	for len(nodesToVisit) > 0 {
+		currentNode := nodesToVisit[0]
+		nodesToVisit = nodesToVisit[1:]
+
+		if currentNode.Data == data {
+			return currentNode
+		}
+
+		if currentNode.LeftChild != nil {
+			nodesToVisit = append(nodesToVisit, currentNode.LeftChild)
+		}
+
+		if currentNode.RightChild != nil {
+			nodesToVisit = append(nodesToVisit, currentNode.RightChild)
+		}
+	}
+
+	return nil
+}
+
+func getLastNode(mh *MinHeap) *MinHeap {
+	var nodesToVisit []*MinHeap
+	nodesToVisit = append(nodesToVisit, mh)
+
+	var lastNode *MinHeap
+
+	for len(nodesToVisit) > 0 {
+		lastNode = nodesToVisit[0]
+		nodesToVisit = nodesToVisit[1:]
+
+		if lastNode.LeftChild != nil {
+			nodesToVisit = append(nodesToVisit, lastNode.LeftChild)
+		}
+
+		if lastNode.RightChild != nil {
+			nodesToVisit = append(nodesToVisit, lastNode.RightChild)
+		}
+	}
+
+	return lastNode
 }

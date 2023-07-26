@@ -7,7 +7,6 @@ import (
 )
 
 func TestInsert(t *testing.T) {
-
 	data := []float64{10, 5, 15, 20, 8, 3, 25}
 	heap := NewMinHeap(data[0])
 	for i := 1; i < len(data); i++ {
@@ -44,4 +43,32 @@ func TestExtract(t *testing.T) {
 	mh.Insert(10)
 	_, minValue = mh.Extract()
 	assert.Equal(t, float64(5), minValue, "Test 2 failed")
+}
+
+func TestPeek(t *testing.T) {
+	mh := NewMinHeap(5)
+	minValue := mh.Peek()
+	assert.Equal(t, float64(5), minValue, "Test 1 failed")
+	mh = NewMinHeap(2)
+	mh.Insert(3)
+	mh.Insert(4)
+	minValue = mh.Peek()
+	assert.Equal(t, float64(2), minValue, "Test 2 failed")
+}
+
+func TestDelete(t *testing.T) {
+	data := []float64{10, 5, 15, 20, 8, 3, 25}
+	heap := NewMinHeap(data[0])
+	for i := 1; i < len(data); i++ {
+		heap.Insert(data[i])
+	}
+
+	heap.Delete(15)
+	assertHeapProperty(t, heap)
+
+	heap.Delete(3)
+	assertHeapProperty(t, heap)
+
+	heap.Delete(10)
+	assertHeapProperty(t, heap)
 }
