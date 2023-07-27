@@ -116,14 +116,11 @@ func TestLastIndexOf(t *testing.T) {
 func TestQueueEdgeCases(t *testing.T) {
 	queue := NewQueue()
 
-	// Test Dequeue on an empty queue
 	assert.Nil(t, queue.Dequeue(), "Dequeue on an empty queue should return nil")
 
-	// Test FrontValue and RearValue on an empty queue
 	assert.Nil(t, queue.FrontValue(), "FrontValue on an empty queue should return nil")
 	assert.Nil(t, queue.RearValue(), "RearValue on an empty queue should return nil")
 
-	// Test Dequeue after Clear
 	queue.Enqueue(1)
 	queue.Enqueue(2)
 	queue.Clear()
