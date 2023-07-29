@@ -1,4 +1,4 @@
-# Single Linked List in Go
+# Singly Linked List in Go
 
 This repository contains a basic implementation of a single linked list in Go. A linked list is a data structure where elements, called nodes, are connected through pointers. Each node contains data and a pointer to the next node in the list.
 
