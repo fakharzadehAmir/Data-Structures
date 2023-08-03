@@ -1,35 +1,50 @@
-# Data-Structures
+# Data Structures
 
-This repository contains implementations of various data structures in Go. Each data structure is organized into separate directories for easy navigation and access.
+This repository contains implementations of various data structures in Golang. Each data structure is designed to provide efficient and flexible data storage and manipulation for different use cases.
 
-## 1. BST (Binary Search Tree)
+## Table of Contents
 
-The `BST` directory contains the implementation of a Binary Search Tree data structure. A Binary Search Tree is a binary tree where the value of each node is greater than or equal to the values in its left subtree and less than or equal to the values in its right subtree.
+1. [Hash Table](https://github.com/fakharzadehAmir/Data-Structures/tree/main/Hash%20Table)
+2. [Heap](https://github.com/fakharzadehAmir/Data-Structures/tree/main/Heap)
+3. [Linked List](https://github.com/fakharzadehAmir/Data-Structures/tree/main/Linked%20List)
+4. [Matrix](https://github.com/fakharzadehAmir/Data-Structures/tree/main/Matrix)
+5. [Queue](https://github.com/fakharzadehAmir/Data-Structures/tree/main/Queue)
+6. [Stack](https://github.com/fakharzadehAmir/Data-Structures/tree/main/Stack)
+7. [Tree](https://github.com/fakharzadehAmir/Data-Structures/tree/main/Tree)
+  
 
-## 2. Binary Tree
+## 1. Hash Table
 
-The `Binary Tree` directory includes the implementation of a basic binary tree data structure. A binary tree is a hierarchical data structure in which each node has at most two children: left child and right child.
+The Hash Table is a data structure that stores key-value pairs and provides fast retrieval and insertion operations. It uses a hash function to map keys to their corresponding buckets, enabling constant-time average access.
 
-## 3. Hashing
+## 2. Heap
 
-The `Hashing` directory contains implementations of hash table data structures. Hashing is a technique used to map data to a fixed-size array, allowing efficient data retrieval and storage.
+The Heap is a specialized binary tree data structure that satisfies the heap property. It allows quick access to the maximum (or minimum) element and efficient insertion and deletion of elements. Heaps are often used in priority queues and sorting algorithms.
 
-## 4. Heap
+## 3. Linked List
 
-The `Heap` directory includes the implementation of heap data structures. A heap is a specialized tree-based data structure that satisfies the heap property, where the key of each node is either greater than or equal to (max heap) or less than or equal to (min heap) the keys of its children.
+The Linked List is a linear data structure that consists of nodes linked together. Each node contains data and a reference to the next node, forming a chain-like structure. Linked lists allow efficient insertion and deletion operations, and they can be used to implement stacks, queues, and other data structures.
 
-## 5. Matrix
+## 4. Matrix
 
-The `Matrix` directory contains implementations of matrix data structures and basic matrix operations. A matrix is a two-dimensional array of elements often used for mathematical computations.
+The Matrix is a two-dimensional data structure used to represent collections of elements in rows and columns. It provides efficient storage and manipulation of numerical data, making it useful for applications like linear algebra and image processing.
 
-## 6. Queue
+## 5. Queue
 
-The `Queue` directory includes implementations of queue data structures. A queue is a linear data structure that follows the First-In-First-Out (FIFO) principle, where the first element added is the first one to be removed.
+The Queue is a linear data structure that follows the First-In-First-Out (FIFO) principle. Elements are inserted at the end (rear) of the queue and removed from the front. Queues are commonly used in task scheduling, breadth-first search, and other scenarios where the order of processing matters.
 
-## 7. Singly Linked List
+## 6. Stack
 
-The `Singly Linked List` directory contains the implementation of a singly linked list data structure. A singly linked list is a linear data structure where each element (node) points to the next element, forming a chain-like structure.
+The Stack is a linear data structure that follows the Last-In-First-Out (LIFO) principle. Elements are inserted and removed from the same end (top) of the stack. Stacks are useful for managing function calls, expression evaluation, and backtracking algorithms.
 
-## 8. Stack
+## 7. Tree
 
-The `Stack` directory includes implementations of stack data structures. A stack is a linear data structure that follows the Last-In-First-Out (LIFO) principle, where the last element added is the first one to be removed.
+The Tree is a hierarchical data structure that consists of nodes connected by edges. Each node can have zero or more child nodes, and there is one special node called the root that has no parent. Trees are widely used for organizing hierarchical data and implementing search algorithms.
+
+
+## Contributing
+
+Contributions to this repository are welcome! If you have any improvements or new data structure implementations to add, feel free to create a pull request. Please ensure that your code is well-documented and passes the existing test cases.
+
+
+Happy coding with data structures! 🚀
